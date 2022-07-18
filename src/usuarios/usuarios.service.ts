@@ -9,29 +9,39 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import { InjectModel } from 'nest-knexjs/dist/common';
 
 @Injectable()
 export class UsuariosService {
   constructor(@InjectModel() private readonly knex: Knex) {}
-  async create(createUsuarioDto: CreateUsuarioDto) {
+  async create(CreateUsuarioDto: CreateUsuarioDto) {
     try {
-      const pass = await hash(CreateUsuarioDto.password, 10);
-      const users = await this.knex.table('users').insert({
-        name: CreateUsuarioDto.name,
-        password: pass,
+      const nsenha = await hash(CreateUsuarioDto.senha,10);
+      const usuario = await this.knex.table('usuario').insert({
+        nome: CreateUsuarioDto.nome,
+        telefone: CreateUsuarioDto.telefone,
+        cpf: CreateUsuarioDto.cpf,
+        endereco: CreateUsuarioDto.endereco,
         email: CreateUsuarioDto.email,
-        role: CreateUsuarioDto.role || 0,
+        senha: nsenha,
+        perfil: CreateUsuarioDto.perfil,
       });
-
-      return { users };
+      return {usuario};
     } catch (error) {
       console.log(error);
       throw new HttpException(error, HttpStatus.BAD_REQUEST);
     }
   }
 
-  findAll() {
-    return `This action returns all usuarios`;
+  async findAll() {
+    try {
+      const usuarios = await this.knex.table('usuario');
+      return usuarios;
+    } catch (error) {
+      console.log(error);
+      throw new HttpException(error, HttpStatus.BAD_REQUEST);
+    }
+
   }
 
   findOne(id: number) {

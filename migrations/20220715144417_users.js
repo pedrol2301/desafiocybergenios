@@ -10,22 +10,13 @@ exports.up = function (knex) {
                                 telefone VARCHAR(19) NULL,
                                 cpf VARCHAR(11) NOT NULL,
                                 endereco VARCHAR(200) NOT NULL,
+                                email VARCHAR(200) NULL,
+                                senha VARCHAR(200) NULL,
+                                perfil VARCHAR(1) NOT NULL DEFAULT 'C',
                                 PRIMARY KEY (idusuario),
-                                UNIQUE INDEX cpf_UNIQUE (cpf ASC) VISIBLE);`,
-  ).raw(`CREATE TABLE knexjs.profile (
-    idprofile INT NOT NULL AUTO_INCREMENT,
-    idusuario INT NULL,
-    email VARCHAR(200) NULL,
-    senha VARCHAR(200) NULL,
-    PRIMARY KEY (idprofile),
-    UNIQUE INDEX idusuario_UNIQUE (idusuario ASC) VISIBLE,
-    UNIQUE INDEX email_UNIQUE (email ASC) VISIBLE,
-    CONSTRAINT idusuario
-      FOREIGN KEY (idusuario)
-      REFERENCES knexjs.usuario (idusuario)
-      ON DELETE CASCADE
-      ON UPDATE NO ACTION);
-  `);
+                                UNIQUE INDEX cpf_UNIQUE (cpf ASC) VISIBLE,
+                                UNIQUE INDEX email_UNIQUE (email ASC) VISIBLE);`
+  );
 };
 
 /**
@@ -33,5 +24,5 @@ exports.up = function (knex) {
  * @returns { Promise<void> }
  */
 exports.down = function (knex) {
-  return knex.schema.dropTable('usuario').dropTable('profile');
+  return knex.schema.dropTable('usuario');
 };
