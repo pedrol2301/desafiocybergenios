@@ -1,9 +1,9 @@
+/* eslint-disable prettier/prettier */
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { KnexModule } from 'nest-knexjs';
-import { UsersModule } from './users/users.module';
-
+import { UsuariosModule } from './usuarios/usuarios.module';
 @Module({
   imports: [
     KnexModule.forRoot({
@@ -19,7 +19,7 @@ import { UsersModule } from './users/users.module';
         },
       },
     }),
-    UsersModule,
+    UsuariosModule,
   ],
   controllers: [AppController],
   providers: [AppService],
