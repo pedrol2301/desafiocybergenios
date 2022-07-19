@@ -26,7 +26,7 @@ export class UsuariosService {
         senha: nsenha,
         perfil: CreateUsuarioDto.perfil,
       });
-      return {usuario};
+      return `Usuário ID: ${usuario[0]} criado com sucesso!`;
     } catch (error) {
       console.log(error);
       throw new HttpException(error, HttpStatus.BAD_REQUEST);
@@ -69,18 +69,15 @@ export class UsuariosService {
   }
 
   async update(id: number, updateUsuarioDto: UpdateUsuarioDto) {
-    var updateFields;
+    var updateFields = [];
     try {
 
       const usuario = await this.knex.table('usuario').where({idusuario:id});
 
       updateFields = await this.validarDiferenca(usuario[0],updateUsuarioDto);
-      console.log (updateFields.length);
-      console.log (updateFields);
-      if(updateFields.length > 0){
+      if(updateFields){
         if(updateFields['senha']){
           updateFields['senha'] = await hash(updateUsuarioDto.senha,10);
-          console.log(updateFields['senha']);
           await this.knex.update(updateFields).where({idusuario:id}).table('usuario');
           return `Usuario atualizado!`;
         }else{
@@ -98,9 +95,20 @@ export class UsuariosService {
     
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} usuario`;
+  async remove(id: number) {
+    try {
+      const usuario = await this.knex.delete().table('usuario').where({idusuario:id});
+      if(usuario)
+          return `Usuário ID: ${id} foi deletado!`;
+      else
+          return `Houve um problema ao deletar o usuário ID: ${id}`
+    } catch (error) {
+      console.log(error);
+      throw new HttpException(error, HttpStatus.BAD_REQUEST);
+    }
+    
   }
+
   async validarDiferenca(arr1,arr2) {
     var arr1Props = Object.getOwnPropertyNames(arr1);
     var returnField = [];
