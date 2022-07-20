@@ -1,9 +1,11 @@
 /* eslint-disable prettier/prettier */
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { KnexModule } from 'nest-knexjs';
 import { UsuariosModule } from './usuarios/usuarios.module';
+import { CarrosModule } from './carros/carros.module';
+import { CheckPermission } from './common/middleware/check-permission.middleware';
 @Module({
   imports: [
     KnexModule.forRoot({
@@ -20,8 +22,13 @@ import { UsuariosModule } from './usuarios/usuarios.module';
       },
     }),
     UsuariosModule,
+    CarrosModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(CheckPermission).forRoutes({path:'*', method: RequestMethod.ALL})
+  }
+}

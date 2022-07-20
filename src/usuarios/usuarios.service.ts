@@ -79,13 +79,13 @@ export class UsuariosService {
         if(updateFields['senha']){
           updateFields['senha'] = await hash(updateUsuarioDto.senha,10);
           await this.knex.update(updateFields).where({idusuario:id}).table('usuario');
-          return `Usuario atualizado!`;
+          return `Usuário ID: ${id} atualizado!`;
         }else{
           await this.knex.update(updateFields).where({idusuario:id}).table('usuario');
-          return `Usuario atualizado!`;
+          return `Usuário ID: ${id} atualizado!`;
         }
       }else{
-        return `Não houve alterações!`;
+        return `Não houve alterações no usuário ID: ${id}!`;
       }
       
     } catch (error) {
@@ -117,7 +117,6 @@ export class UsuariosService {
       var propName = arr1Props[i];
       
       if (propName == 'senha') {
-        console.log('entrou')
         let result = await compare(arr1[propName],arr2[propName]);
         
         if(!result)
