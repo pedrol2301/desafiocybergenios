@@ -10,6 +10,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from 'nest-knexjs/dist/common';
+import { Usuario } from './entities/usuario.entity';
 
 @Injectable()
 export class UsuariosService {
@@ -108,6 +109,19 @@ export class UsuariosService {
     }
     
   }
+
+  async findByEmail(email:string): Promise<any | undefined> {
+    try {
+      const usuario = await this.knex.select().table('usuario').where({email:email});
+      console.log(usuario)
+      return usuario;
+    } catch (error) {
+      console.log(error);
+      throw new HttpException(error, HttpStatus.BAD_REQUEST);
+    }
+    
+  }
+  
 
   async validarDiferenca(arr1,arr2) {
     var arr1Props = Object.getOwnPropertyNames(arr1);

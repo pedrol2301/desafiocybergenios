@@ -5,7 +5,7 @@ import { AppService } from './app.service';
 import { KnexModule } from 'nest-knexjs';
 import { UsuariosModule } from './usuarios/usuarios.module';
 import { CarrosModule } from './carros/carros.module';
-import { CheckPermission } from './common/middleware/check-permission.middleware';
+import { AuthModule } from './auth/auth.module';
 @Module({
   imports: [
     KnexModule.forRoot({
@@ -21,14 +21,10 @@ import { CheckPermission } from './common/middleware/check-permission.middleware
         },
       },
     }),
-    UsuariosModule,
     CarrosModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer.apply(CheckPermission).forRoutes({path:'*', method: RequestMethod.ALL})
-  }
-}
+export class AppModule{}

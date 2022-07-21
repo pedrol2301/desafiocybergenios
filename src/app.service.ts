@@ -6,27 +6,8 @@ import { compare } from 'bcrypt';
 
 @Injectable()
 export class AppService {
-  constructor(@InjectModel() private readonly knex: Knex) {}
-  getHello(): string {
-    return 'Hello World!';
+  index(): string {
+    return 'Bem vindo ao desafio de Back-End Cyber Gênios';
   }
 
-  async Login(Usuario: Usuario){
-    try {
-      let usuario:any = await this.knex.select().table('usuario').where({email:Usuario.email});
-      if(usuario){
-        let result = await compare(Usuario.senha,usuario.senha);
-        if (result) {
-          
-        } else {
-          throw new HttpException('Senha Incorreta!', HttpStatus.NOT_ACCEPTABLE);
-        }
-      }else{
-        throw new HttpException('Email incorreto!', HttpStatus.NOT_ACCEPTABLE);
-      }
-    } catch (error) {
-      console.log(error);
-      throw new HttpException(error, HttpStatus.BAD_REQUEST);
-    }
-  }
 }

@@ -15,8 +15,8 @@ describe('AppController', () => {
   });
 
   describe('root', () => {
-    it('should return "Hello World!"', () => {
-      expect(appController.getHello()).toBe('Hello World!');
+    it('should return "Bem vindo ao desafio de Back-End Cyber Gênios"', () => {
+      expect(appController.index()).toBe('Bem vindo ao desafio de Back-End Cyber Gênios');
     });
   });
 });
