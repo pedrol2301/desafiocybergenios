@@ -3,7 +3,7 @@
  * @returns { Promise<void> }
  */
 exports.up = function (knex) {
-  return knex.schema.raw(
+  return knex.schema.raw(`CREATE SCHEMA knexjs ;`).raw(
                         `CREATE TABLE knexjs.usuario (
                             idusuario INT NOT NULL AUTO_INCREMENT,
                             nome VARCHAR(50) NULL,
